@@ -1,10 +1,10 @@
-package com.adrinofast.kafkaconsumerAWSES;
+package com.adrinofast.kafkacon;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class KafkaConsumerAwsEsApplicationTests {
+class KafkaconApplicationTests {
 
 	@Test
 	void contextLoads() {

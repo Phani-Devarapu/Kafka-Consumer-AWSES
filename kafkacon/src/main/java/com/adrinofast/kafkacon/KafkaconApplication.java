@@ -1,13 +1,13 @@
-package com.adrinofast.kafkaconsumerAWSES;
+package com.adrinofast.kafkacon;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class KafkaConsumerAwsEsApplication {
+public class KafkaconApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(KafkaConsumerAwsEsApplication.class, args);
+		SpringApplication.run(KafkaconApplication.class, args);
 	}
 
 }
