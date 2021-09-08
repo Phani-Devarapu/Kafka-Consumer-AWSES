@@ -1,13 +1,16 @@
 package com.adrinofast.kafkacon;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +23,10 @@ public class TweetService {
 	final  String INDEX = "my-index-tweet";
 	   final  String TYPE = "_doc";
 	
-	 private RestHighLevelClient client;
+	   @Autowired
+	   private RestHighLevelClient client;
 
-	    private ObjectMapper objectMapper;
+       private ObjectMapper objectMapper;
 
 	    @Autowired
 	    public TweetService(RestHighLevelClient client, ObjectMapper objectMapper) {
@@ -34,9 +38,7 @@ public class TweetService {
 
 	        UUID uuid = UUID.randomUUID();
 	        document.setId(uuid.toString());
-//
-//	        Map<String, String> documentMapper = new HashMap<>();
-//	        documentMapper.put("hello", "ia m good");
+
 	        TweetDocument tw = new TweetDocument();
 	        tw.setBy("ffd");
 	        tw.setId("plol");
@@ -53,5 +55,23 @@ public class TweetService {
 	                .getResult()
 	                .name();
 	    }
-
+	    
+	    public void createIndexRequest(ConsumerRecords<String, String> records) {
+	    	
+	   	records.forEach(record->{
+	   		System.out.println(record.key());
+	   		System.out.println(record.value());
+	   		
+	    		IndexRequest indexRequest = new IndexRequest(INDEX).id(record.key()).source(record.value(),XContentType.JSON);
+	    		 try {
+					IndexResponse indexResponse = client.index(indexRequest, RequestOptions.DEFAULT);
+					System.out.println(indexResponse.getIndex());
+					
+				} catch (IOException e) {
+					e.printStackTrace();
+				}	
+	    	});
+	    	
+	    	
+	    }
 }
